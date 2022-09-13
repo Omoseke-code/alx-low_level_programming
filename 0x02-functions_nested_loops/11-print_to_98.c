@@ -3,7 +3,7 @@
 
 /**
  * print_to_98 - prints 0-98
- * @n - parameter
+ * @n: parameter
  *
  * Return: numbers
  */
