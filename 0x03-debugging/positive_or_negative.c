@@ -4,7 +4,7 @@
 
 /**
  * positive_or_negative - entry point
- *
+ * @i: parameter
  * conditions
  *
  * Return: 0 - success
