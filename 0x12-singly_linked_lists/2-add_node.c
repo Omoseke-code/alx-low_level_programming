@@ -1,5 +1,4 @@
 #include "lists.h"
-#include <stdio.h>
 #include <string.h>
 
 /**
@@ -19,7 +18,10 @@ if (newnode == NULL)
 	return (NULL);
 dup = strdup(str);
 if (dup == NULL)
+{
+	free(newnode);
 	return (NULL);
+}
 for (len = 0; str[len]; len++)
 	;
 newnode->str = dup;
