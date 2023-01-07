@@ -9,6 +9,7 @@
 hash_node_t *ht_pair(const char *key, const char *value)
 {
 	hash_node_t *entry = malloc(sizeof(hash_node_t));
+
 	entry->key = malloc(strlen(key) + 1);
 	entry->value = malloc(strlen(value) + 1);
 
@@ -17,7 +18,7 @@ hash_node_t *ht_pair(const char *key, const char *value)
 
 	entry->next = NULL;
 
-	return entry;
+	return (entry);
 }
 /**
  * hash_table_set -  a function that adds an element to the hash table.
