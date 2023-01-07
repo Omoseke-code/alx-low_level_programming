@@ -1,66 +1,57 @@
+/*
+ * File: 3-hash_table_set.c
+*/
+
 #include "hash_tables.h"
 
 /**
- * ht_pair - sets the key and value
- * @key: key
- * @value: value
- * Return: new entry
- */
-hash_node_t *ht_pair(const char *key, const char *value)
-{
-	hash_node_t *entry = malloc(sizeof(hash_node_t));
-
-	entry->key = malloc(strlen(key) + 1);
-	entry->value = malloc(strlen(value) + 1);
-
-	strcpy(entry->key, key);
-	strcpy(entry->value, value);
-
-	entry->next = NULL;
-
-	return (entry);
-}
-/**
- * hash_table_set -  a function that adds an element to the hash table.
- * @ht: hash table
- * @key: key
- * @value: value associated with the key
- * Return: 1 on success and 0 on failure
+ * hash_table_set - Add or update an element in a hash table.
+ * @ht: A pointer to the hash table.
+ * @key: The key to add - cannot be an empty string.
+ * @value: The value associated with key.
+ *
+ * Return: Upon failure - 0.
+ *         Otherwise - 1.
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	hash_node_t *entry, *prev;
-	unsigned int slot = 0;
+	hash_node_t *new;
+	char *value_copy;
+	unsigned long int index, i;
 
-	if (key == NULL || value == NULL || ht == NULL || *key == '\0')
+	if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
 		return (0);
 
-	slot = key_index((const unsigned char *) key, ht->size);
-	entry = ht->array[slot];
+	value_copy = strdup(value);
+	if (value_copy == NULL)
+		return (0);
 
-	if (entry == NULL)
+	index = key_index((const unsigned char *)key, ht->size);
+	for (i = index; ht->array[i]; i++)
 	{
-		ht->array[slot] = ht_pair(key, value);
-		return (1);
-	}
-
-	while (entry != NULL)
-	{
-		if (strcmp(entry->key, key) == 0)
+		if (strcmp(ht->array[i]->key, key) == 0)
 		{
-			free(entry->value);
-			entry->value = malloc(strlen(value) + 1);
-			strcpy(entry->value, value);
-			if (entry->value == NULL)
-				return (0);
+			free(ht->array[i]->value);
+			ht->array[i]->value = value_copy;
 			return (1);
 		}
-
-		prev = entry;
-		entry = prev->next;
 	}
 
-	prev->next = ht_pair(key, value);
+	new = malloc(sizeof(hash_node_t));
+	if (new == NULL)
+	{
+		free(value_copy);
+		return (0);
+	}
+	new->key = strdup(key);
+	if (new->key == NULL)
+	{
+		free(new);
+		return (0);
+	}
+	new->value = value_copy;
+	new->next = ht->array[index];
+	ht->array[index] = new;
 
 	return (1);
 }
