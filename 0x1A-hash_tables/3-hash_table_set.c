@@ -29,7 +29,7 @@ hash_node_t *ht_pair(const char *key, const char *value)
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	hash_node_t *entry = NULL, *prev;
+	hash_node_t *entry, *prev;
 	unsigned int slot = 0;
 
 	if (key == NULL || value == NULL || ht == NULL || *key == '\0')
@@ -41,7 +41,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	if (entry == NULL)
 	{
 		ht->array[slot] = ht_pair(key, value);
-		return (1);
+		return (0);
 	}
 
 	while (entry != NULL)
