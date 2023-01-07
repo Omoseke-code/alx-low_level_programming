@@ -41,7 +41,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	if (entry == NULL)
 	{
 		ht->array[slot] = ht_pair(key, value);
-		return (0);
+		return (1);
 	}
 
 	while (entry != NULL)
@@ -51,6 +51,8 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 			free(entry->value);
 			entry->value = malloc(strlen(value) + 1);
 			strcpy(entry->value, value);
+			if (entry->value == NULL)
+				return (0);
 			return (1);
 		}
 
