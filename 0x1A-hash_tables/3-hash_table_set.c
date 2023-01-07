@@ -41,7 +41,7 @@ int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 	if (entry == NULL)
 	{
 		ht->array[slot] = ht_pair(key, value);
-		return (1);
+		return (0);
 	}
 
 	while (entry != NULL)
